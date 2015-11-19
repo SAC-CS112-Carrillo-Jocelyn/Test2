@@ -29,9 +29,8 @@ public class Dice {
 		return diceNumber=(1*(int)(Math.random()*(high)));
 	}
 	
-	//Checks PlayerGuess against Dice location
+	//Checks PlayerGuess against Dice
 	public String GuessCheck(String Guess){
-		playerGuess=Guess;
 		if (Guess.equals(HL)){
 			PlayerPoints("w");
 			return "You guessed correctly!";
@@ -40,7 +39,6 @@ public class Dice {
 			PlayerPoints("l");
 			return "You guessed wrong!";
 	}
-	//Tells us if the diceNumber is in the HIGH or LOW RANGE
 
 	//Adds/Subtracts to current player score
 	private int PlayerPoints(String a){
@@ -53,6 +51,7 @@ public class Dice {
 		return playerScore;			
 	}
 	
+	//To print out scores at end
 	public String Scores(){ 
 		String a=String.format("Total Outcomes:\nNumber of Games played:%d\n"
 				+ "Player score:%d\nGuess For Each Game:%s\nDice roll for each game:%s" ,
@@ -67,15 +66,15 @@ public class Dice {
 	public int Games(){
 		return games++;
 	}
+	//Keep track of Player Guesses
 	public String GameGuesses(){
 		guesses[games]=playerGuess;
 		if(guesses[games]==null)
 			return guessString;
 		else
-			return guessString =guessString+" "+guesses[games];
-			
-		
+			return guessString =guessString+" "+guesses[games];	
 	}
+	//Keep track of Dice rolls
 	public String DiceNumbers(){
 		diceList[games] = diceNumber;
 		if(diceList[games]==0)

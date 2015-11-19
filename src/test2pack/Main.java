@@ -11,7 +11,7 @@ public class Main {
 					("How many dice would you like to roll?"));
 			d.DiceThrown(dice);
 			
-			JOptionPane.showMessageDialog(null,d.Number());//Debug Purposes
+			//JOptionPane.showMessageDialog(null,d.Number());//Debug Purposes
 			
 			String guess = JOptionPane.showInputDialog
 					("Was the number rolled in the high range or low, guess.");
