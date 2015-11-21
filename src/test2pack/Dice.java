@@ -1,5 +1,8 @@
 package test2pack;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class Dice {
 	
 	//default constructor
@@ -7,80 +10,89 @@ public class Dice {
 		diceNumber = 1;
 		playerScore = 0; games = 0;
 		mid = 0; high = 0;
-		HL="a";
+		HL="wot u want mate?";
 	}
 	
-	private int diceNumber;
-	private int playerScore, games;
-	private int mid, high;
-	private String HL, playerGuess, diceString;
-	private String guesses[]=new String[20], guessString;
-	private int diceList[]= new int[20];
+	private int diceNumber, playerScore, games, mid, high;
+	private String HL; //indicates if diceNumber is high or low
+	private List<String> guesses=new ArrayList<String>();
+	private List<String> diceList=new ArrayList<String>();
 	
 	//Throws Dice
 	public int DiceThrown(int diceThrown){
-		high = (6*diceThrown); mid =(high/2);
-		if(mid>diceNumber)
+		high = (6*diceThrown); mid =(high/2); // find high & low ranges
+		diceNumber=0; //resets diceNumber for every game
+		
+		System.out.println("Starting a new dice roll."); //Debug
+		
+		//Rolls according to # of diceThrown, while adding results to diceNumber
+		for(int i=0; i<diceThrown ;i++){
+			int roll = (int)Math.round(((Math.random() * 5.0) + 1));
+			diceNumber += roll;
+			System.out.println("Rolled a dice with value: " + roll);//Debug
+		}
+		//Checks whether diceNumber is low or high
+		if(diceNumber <= mid)
 			HL="low";
-		else if((mid+1)<diceNumber)
+		else if(diceNumber > mid)
 			HL="high";
 		else
 			HL="invalid";
-		return diceNumber=(1*(int)(Math.random()*(high)));
+		return diceNumber;
 	}
 	
-	//Checks PlayerGuess against Dice
+	//Checks PlayerGuess against HL
 	public String GuessCheck(String Guess){
+		
+		guesses.add(Guess); //adds the guess to the guess history
+		diceList.add(((Integer)diceNumber).toString());//adds diceNumber to history
+		
 		if (Guess.equals(HL)){
-			PlayerPoints("w");
+			PlayerPoints(true);
 			return "You guessed correctly!";
 		}
 		else
-			PlayerPoints("l");
+			PlayerPoints(false);
 			return "You guessed wrong!";
 	}
-
+	
+	//To print out scores & history at end
+	public String Scores(){ 
+		String a=String.format("Total Outcomes\nNumber of Games played: %d\n"
+				+ "Player score: %d\nGuess For Each Game: %s\nDice roll for each game: %s" ,
+				Games(),PlayerScore(),GameGuesses(),DiceNumbers());
+		return a;
+	}
+		
 	//Adds/Subtracts to current player score
-	private int PlayerPoints(String a){
-		switch (a){
-			case "w":
-				playerScore++;break;
-			case "l":
-				playerScore--;break;
+	private int PlayerPoints(boolean win){
+		games++; //add to total # of games played
+		
+		if (win){
+			playerScore++;
+		}
+		else{
+			playerScore--;
 		}
 		return playerScore;			
 	}
 	
-	//To print out scores at end
-	public String Scores(){ 
-		String a=String.format("Total Outcomes:\nNumber of Games played:%d\n"
-				+ "Player score:%d\nGuess For Each Game:%s\nDice roll for each game:%s" ,
-				Games(),PlayerScore(),guessString,diceString);
-		return a;
-	}
-	//Return player score
-	public int PlayerScore(){
+	
+	//Output player score
+	private int PlayerScore(){
 		return playerScore;
 	}
-	//Game #
-	public int Games(){
-		return games++;
+	//Outputs game #
+	private int Games(){
+		return games;
 	}
-	//Keep track of Player Guesses
-	public String GameGuesses(){
-		guesses[games]=playerGuess;
-		if(guesses[games]==null)
-			return guessString;
-		else
-			return guessString =guessString+" "+guesses[games];	
+	//Output Player Guesses
+	private String GameGuesses(){
+		return String.join(", ", guesses);	
 	}
-	//Keep track of Dice rolls
-	public String DiceNumbers(){
-		diceList[games] = diceNumber;
-		if(diceList[games]==0)
-			return diceString;
-		else
-			return diceString= diceString+" "+diceList[games];
+	//Output Dice rolls
+	private String DiceNumbers(){
+		return String.join(", ", diceList);
 	}
 	
 	//For Debug purposes
